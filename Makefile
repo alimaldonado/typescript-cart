@@ -17,9 +17,6 @@ build: ## Rebuilds all the containers
 run: ## Start the containers
 	U_ID=${UID} docker-compose up -d
 
-frontend: ## Start the react app
-	U_ID=${UID} yarn --cwd ./frontend start
-
 stop: ## Stop the containers
 	U_ID=${UID} docker-compose stop
 
@@ -42,4 +39,4 @@ tests: # Runs existent tests
 	U_ID=${UID} docker exec -it ${DOCKER_BE} pytest -v
 
 pep: # Runs PEP8 Style standards
-	U_ID=${UID} autopep8 . --recursive --in-place --pep8-passes 2000 --verbose
+	U_ID=${UID} docker exec -it ${DOCKER_BE} autopep8 . --recursive --in-place --pep8-passes 2000 --verbose
