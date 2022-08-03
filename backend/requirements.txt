@@ -1,0 +1,22 @@
+# app
+fastapi==0.79.0
+uvicorn==0.18.2
+pydantic==1.9.1
+email-validator==1.2.1
+python-multipart==0.0.5
+
+# db
+databases[postgresql]==0.6.0
+SQLAlchemy==1.4.39
+alembic==1.8.1
+psycopg2-binary==2.9.3
+# auth
+pyjwt==2.4.0
+passlib[bcrypt]==1.7.4
+
+# dev
+pytest==7.1.2
+pytest-asyncio==0.19.0
+httpx==0.16.1
+asgi-lifespan==1.0.1
+

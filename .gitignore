@@ -1,0 +1,10 @@
+# docker
+docker-compose.yml
+# vscode
+.devcontainer/
+
+# Byte-compiled files
+__pycache__/
+
+# Environment files
+.env
