@@ -1,20 +1,21 @@
 import { Button, Stack } from "react-bootstrap";
 import { useShoppingCart } from "../context/ShoppingCartContext";
-import storeItems from "../data/items.json";
+import { useProductsCollection } from "../hooks/products/useProductsCollection";
 import { formatCurrency } from "../utilities/formatCurrency";
 
-type CartItemProps = { id: number; quantity: number };
+type CartItemProps = { id: string; quantity: number };
 
 export function CartItem({ id, quantity }: CartItemProps) {
   const { removeFromCart } = useShoppingCart();
+  const { products, loaded } = useProductsCollection();
 
-  const item = storeItems.find((i) => i.id === id);
+  const item = loaded ? products.find((i) => i.id === id) : null;
   if (item === null || item === undefined) return null;
 
   return (
     <Stack direction="horizontal" gap={2}>
       <img
-        src={item?.imgUrl}
+        src={item?.imgUrl || "https://source.unsplash.com/400x200/?laptop"}
         style={{
           width: "125px",
           height: "75px",

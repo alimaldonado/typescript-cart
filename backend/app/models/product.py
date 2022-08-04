@@ -18,5 +18,5 @@ class ProductInDB(IDModelMixin, ProductBase, DateTimeModelMixin):
     pass
 
 
-class ProductPublic(IDModelMixin, ProductBase):
+class ProductPublic(IDModelMixin, ProductBase, DateTimeModelMixin):
     pass

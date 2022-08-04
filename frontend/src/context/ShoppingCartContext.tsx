@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { ShoppingCart } from "../components/ShoppingCart";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useLocalStorage } from "../hooks/data/useLocalStorage";
 
 type ShoppingCartProviderProps = {
   children: ReactNode;
@@ -9,16 +9,16 @@ type ShoppingCartProviderProps = {
 type ShoppingCartContext = {
   openCart: () => void;
   closeCart: () => void;
-  getItemQuantity: (id: number) => number;
-  increaseCartQuantity: (id: number) => void;
-  decreaseCartQuantity: (id: number) => void;
-  removeFromCart: (id: number) => void;
+  getItemQuantity: (id: string) => number;
+  increaseCartQuantity: (id: string) => void;
+  decreaseCartQuantity: (id: string) => void;
+  removeFromCart: (id: string) => void;
   cartQuantity: number;
   cartItems: CartItem[];
 };
 
 type CartItem = {
-  id: number;
+  id: string;
   quantity: number;
 };
 
@@ -42,11 +42,11 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     0
   );
 
-  function getItemQuantity(id: number) {
+  function getItemQuantity(id: string) {
     return cartItems.find((item) => item.id === id)?.quantity || 0;
   }
 
-  function increaseCartQuantity(id: number) {
+  function increaseCartQuantity(id: string) {
     setCartItems((currentItems) => {
       if (currentItems.find((item) => item.id === id) === undefined) {
         console.log("+1");
@@ -64,7 +64,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     });
   }
 
-  function decreaseCartQuantity(id: number) {
+  function decreaseCartQuantity(id: string) {
     setCartItems((currentItems) => {
       if (currentItems.find((item) => item.id === id)?.quantity === 1) {
         return currentItems.filter((item) => item.id !== id);
@@ -80,7 +80,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     });
   }
 
-  function removeFromCart(id: number) {
+  function removeFromCart(id: string) {
     setCartItems((currentItems) => {
       return currentItems.filter((item) => item.id !== id);
     });
