@@ -1,4 +1,5 @@
 import { Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { Product } from "../hooks/products/types";
 import { formatCurrency } from "../utilities/formatCurrency";
@@ -24,8 +25,14 @@ export const StoreItem = ({ id, name, price, imgUrl }: Product) => {
       />
       <Card.Body className="d-flex flex-column">
         <Card.Title className="d-flex justify-content-between aling-items-baseline mb4">
-          <span className="fs-2">{name}</span>
-          <span className="ms-2">{formatCurrency(price)}</span>
+          <Link
+            className="text-dark"
+            to={`/store/products/${id}`}
+            style={{ textDecoration: "none" }}
+          >
+            <span className="fs-2">{name}</span>
+            <span className="ms-2">{formatCurrency(price)}</span>
+          </Link>
         </Card.Title>
         <div className="mt-auto">
           {quantity === 0 ? (

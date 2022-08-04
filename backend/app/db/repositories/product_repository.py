@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+from starlette.status import HTTP_404_NOT_FOUND
 from app.db.repositories.base_repository import BaseRepository
 from app.models.product import ProductCreate, ProductInDB
 from uuid import uuid4
@@ -44,5 +46,9 @@ class ProductRepository(BaseRepository):
                 "id": id
             }
         )
+
+        if not product:
+            raise HTTPException(status_code=HTTP_404_NOT_FOUND,
+                                detail="No product found with that id.")
 
         return ProductInDB(**product)
