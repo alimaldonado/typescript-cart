@@ -11,8 +11,8 @@ export const useProductsCollection = (): {
 
   const products = data?.map((product: any) => ({
     ...product,
-    createdAt: product?.createdAt,
-    updatedAt: product?.updatedAt,
+    createdAt: new Date(product?.createdAt),
+    updatedAt: new Date(product?.updatedAt),
   }));
 
   return { cancel, products, error, loaded };

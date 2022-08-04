@@ -12,6 +12,10 @@ CREATE_PRODUCT_QUERY = """
     RETURNING id, name, price, created_at, updated_at
 """
 
+GET_PRODUCT_BY_ID_QUERY = """
+    SELECT * FROM PRODUCTS WHERE id = :id LIMIT 1;
+"""
+
 
 class ProductRepository(BaseRepository):
     async def get_all_products(self):
@@ -33,5 +37,12 @@ class ProductRepository(BaseRepository):
 
         return ProductInDB(**product)
 
-    async def get_product_by_id():
-        pass
+    async def get_product_by_id(self, *, id: str) -> ProductInDB:
+        product = await self.db.fetch_one(
+            query=GET_PRODUCT_BY_ID_QUERY,
+            values={
+                "id": id
+            }
+        )
+
+        return ProductInDB(**product)
