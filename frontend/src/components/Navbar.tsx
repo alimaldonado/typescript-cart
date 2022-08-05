@@ -17,7 +17,10 @@ export const Navbar = () => {
           <Nav.Link as={NavLink} to="/about">
             About
           </Nav.Link>
-        </Nav>
+           <Nav.Link as={NavLink} to="/admin">
+            Admin. Products
+          </Nav.Link>
+       </Nav>
         {cartQuantity > 0 && (
           <Button
             style={{ width: "3rem", height: "3rem", position: "relative" }}

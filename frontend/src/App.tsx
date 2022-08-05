@@ -6,6 +6,7 @@ import { Store } from "./pages/Store";
 import { Navbar } from "./components/Navbar";
 import { ShoppingCartProvider } from "./context/ShoppingCartContext";
 import { AxiosInstanceProvider } from "./context/AxiosContext";
+import { AdminPage } from "./pages/Admin";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/store/*" element={<Store />} />
             <Route path="/about" element={<About />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </Container>
       </ShoppingCartProvider>
