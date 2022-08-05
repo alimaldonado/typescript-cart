@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 
 from app.core import config, tasks
@@ -20,6 +21,8 @@ def get_application():
     app.add_event_handler("shutdown", tasks.create_stop_app_handler(app))
 
     app.include_router(api_router, prefix=config.API_PREFIX)
+
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 
     return app
 

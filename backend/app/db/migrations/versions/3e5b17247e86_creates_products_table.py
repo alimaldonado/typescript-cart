@@ -47,15 +47,40 @@ def timestamps(indexed: bool = False) -> Tuple[sa.Column, sa.Column]:
         ),
     )
 
+def create_files_table():
+    op.create_table(
+        "files",
+        sa.Column("id", sa.CHAR(36), primary_key=True),
+        sa.Column("filename_disk", sa.String,
+                  nullable=False, index=True),
+        sa.Column("title", sa.String,
+                  nullable=False, index=True),
+        *timestamps(),
+    )
+    op.execute(
+        """
+        CREATE TRIGGER update_files_modtime
+            BEFORE UPDATE
+            ON files
+            FOR EACH ROW
+        EXECUTE PROCEDURE update_updated_at_column();
+        """
+    )
 
-def upgrade() -> None:
-    create_updated_at_trigger()
+def create_products_table():
     op.create_table(
         "products",
         sa.Column("id", sa.CHAR(36), primary_key=True),
         sa.Column("name", sa.String,
                   nullable=False, index=True),
         sa.Column("price", sa.Numeric(10, 2), nullable=False),
+        sa.Column(
+            "picture",  # 'user' is a reserved word in postgres, so going with user_id instead
+            sa.CHAR(36),
+            sa.ForeignKey("files.id", ondelete="CASCADE"),
+            nullable=True,
+            index=True,
+        ),
         *timestamps(),
     )
     op.execute(
@@ -69,6 +94,12 @@ def upgrade() -> None:
     )
 
 
+def upgrade() -> None:
+    create_updated_at_trigger()
+    create_files_table()
+    create_products_table()
+
 def downgrade() -> None:
     op.drop_table("products")
+    op.drop_table("files")
     op.execute("DROP FUNCTION update_updated_at_column")

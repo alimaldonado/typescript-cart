@@ -1,7 +1,7 @@
 from fastapi import HTTPException
-from starlette.status import HTTP_404_NOT_FOUND
+from starlette.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 from app.db.repositories.base_repository import BaseRepository
-from app.models.product import ProductCreate, ProductInDB
+from app.models.product import ProductCreate, ProductInDB, ProductUpdate
 from uuid import uuid4
 
 GET_ALL_PRODUCTS_QUERY = """
@@ -16,6 +16,15 @@ CREATE_PRODUCT_QUERY = """
 
 GET_PRODUCT_BY_ID_QUERY = """
     SELECT * FROM PRODUCTS WHERE id = :id LIMIT 1;
+"""
+
+UPDATE_PRODUCT_BY_ID_QUERY = """
+    UPDATE products
+    SET name    = :name,
+        price   = :price,
+        picture = :picture
+    WHERE id = :id
+    RETURNING id, name, price, picture, created_at, updated_at
 """
 
 
@@ -52,3 +61,17 @@ class ProductRepository(BaseRepository):
                                 detail="No product found with that id.")
 
         return ProductInDB(**product)
+
+    async def update_product(
+        self, *, product: ProductInDB, product_update: ProductUpdate
+    ) -> ProductInDB:
+        product_update_params = product.copy(
+            update=product_update.dict(exclude_unset=True))
+
+        updated_product = await self.db.fetch_one(
+            query=UPDATE_PRODUCT_BY_ID_QUERY,
+            values=product_update_params.dict(
+                exclude={"created_at", "updated_at"})
+        )
+
+        return ProductInDB(**updated_product)

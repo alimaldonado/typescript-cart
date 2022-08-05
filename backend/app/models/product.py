@@ -1,4 +1,5 @@
 from app.models.core import CoreModel, DateTimeModelMixin, IDModelMixin
+from typing import Optional
 
 
 class ProductBase(CoreModel):
@@ -11,12 +12,11 @@ class ProductCreate(ProductBase):
 
 
 class ProductUpdate(ProductBase):
-    pass
+    picture: Optional[str]
 
 
 class ProductInDB(IDModelMixin, ProductBase, DateTimeModelMixin):
-    pass
-
+    picture: Optional[str]
 
 class ProductPublic(IDModelMixin, ProductBase, DateTimeModelMixin):
-    pass
+    picture: Optional[str]
